@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"net/http"
 	"programmerq-auth-apis/pkg/auth"
 )
@@ -16,11 +17,20 @@ func NewLoginHandler(strategy auth.Strategy) *LoginHandler {
 }
 
 func (h *LoginHandler) HandleLogin(w http.ResponseWriter, r *http.Request) {
-	// Extract credentials from the request
-	// username := ...
-	// password := ...
+	// Initialize the structure to store the data
+	creds := &struct {
+		username string `json:"username"`
+		password string `json:"password"`
+	}{}
 
-	ok, err := h.authenticator.Authenticate(username, password)
+	// Decode the JSON body of the request into the creds structure
+	err := json.NewDecoder(r.Body).Decode(creds)
+	if err != nil {
+		// Handle error
+		return
+	}
+
+	ok, err := h.authenticator.Authenticate(creds.username, creds.password)
 	if err != nil {
 		// Handle error
 		return
