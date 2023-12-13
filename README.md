@@ -1,2 +1,2 @@
 # programmerq-auth-apis
-APIs used by programmerq to authenticate
+API used by programmerq to AuthN and AuthZ following the Golang Strategy pattern
